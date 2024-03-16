@@ -6,7 +6,7 @@ function Home() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h1>Smart Data Injector</h1>
-      <Link href="https://s3.amazonaws.com/cad-2.0/Screen+Recording+2024-03-16+at+21.04.24.mov">
+      <Link href="https://youtu.be/nltLReIJffk">
         <button>Video Link</button>
       </Link> 
       <div>
