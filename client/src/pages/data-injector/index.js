@@ -20,56 +20,51 @@ function Injector() {
     setApiKey(event.target.value);
     setUploadEnabled(!!event.target.value);
   };
-
   const startSimulation = async () => {
     if (!apiKey) {
       errorNotify("API key not provided.");
       return;
     }
-
+  
     if (!file) {
       setModalOpen(true); // Open modal if no file is selected
       errorNotify("No file has been selected for upload.");
       return;
     }
-
+  
     const formData = new FormData();
     formData.append("file", file);
     notify("🚀 Starting Jobs...");
+  
     try {
-      try{
-        await axios.post("https://api.aryansingh.dev/sdi/api/bucketUpload", formData, {
+      await axios.post("https://api.aryansingh.dev/cad/api/bucketUpload", formData, {
         headers: {
           "api-key": apiKey,
           "Content-Type": "multipart/form-data",
         },
       });
-      }
-      catch (err) {
-        notifyError("Failed to upload file. Please try again.");
-        return;
-      }
-
+  
       // Simulate S3 upload process
       setTimeout(() => {
         setS3("uploaded");
       }, 4000);
-
+  
       // Simulate Crawler processing after S3 is done
       setTimeout(() => {
-        setGlue("processed");
+        // setGlue("processed");
+        setGlue("failed");
       }, 24000);
-
+  
       // Simulate Database update after Crawler is done
       setTimeout(() => {
-        setDBStore("uploaded");
+        setDBStore("failed");
       }, 27000);
     } catch (error) {
       console.error("Error:", error);
       errorNotify("Failed to upload file. Please try again.");
     }
   };
-
+  
   const notify = (message) =>
     toast(message, {
       position: "top-right",
@@ -107,33 +102,36 @@ function Injector() {
         <input type="file" id="file" onChange={handleFileChange} accept=".csv, .json" />
         <button onClick={startSimulation} disabled={!uploadEnabled}>Upload and Start ETL</button>
         <ol className="orderList">
-          <li className="listItem">
-            S3 Status:{" "}
-            {s3 === "uploading"
-              ? "Uploading file to S3"
-              : s3 === "uploaded"
-              ? "File successfully Uploaded to S3 ✔️"
-              : null}
-          </li>
-          <li className="listItem">
-            Crawler Status:
-            {glue === "pending"
-              ? "Waiting for Apache Spark to start"
-              : glue === "processing"
-              ? "Running Apache Spark"
-              : glue === "processed"
-              ? "Processing Complete ✔️"
-              : null}
-          </li>
-          <li className="listItem">
-            Database Status:
-            {store_DB === "pending"
-              ? "Waiting for file"
-              : store_DB === "uploaded"
-              ? "File uploaded to database ✔️"
-              : null}
-          </li>
-        </ol>
+  <li className="listItem">
+    S3 Status:{" "}
+    {s3 === "uploading"
+      ? "Uploading file to S3"
+      : s3 === "uploaded"
+      ? "File successfully Uploaded to S3 ✔️"
+      : null}
+  </li>
+  <li className="listItem">
+    Crawler Status:
+    {glue === "pending"
+      ? "Waiting for Apache Spark to start"
+      : glue === "processing"
+      ? "Running Apache Spark"
+      : glue === "processed"
+      ? "Processing Complete ✔️"
+      : glue === "failed"
+      ? "Processing Failed ❌"
+      : null}
+  </li>
+  <li className="listItem">
+    Database Status:
+    {store_DB === "pending"
+      ? "Waiting for file"
+      : store_DB === "uploaded"
+      ? "File uploaded to database ✔️"
+      : null}
+  </li>
+</ol>
+
       </div>
     </div>
   );
