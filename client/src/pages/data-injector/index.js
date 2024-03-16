@@ -37,7 +37,7 @@ function Injector() {
     notify("🚀 Starting Jobs...");
   
     try {
-      await axios.post("https://api.aryansingh.dev/cad/api/bucketUpload", formData, {
+      await axios.post("http://3.86.68.154:5050/api/bucketUpload", formData, {
         headers: {
           "api-key": apiKey,
           "Content-Type": "multipart/form-data",

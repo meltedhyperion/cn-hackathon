@@ -27,7 +27,7 @@ function Home() {
 
   const checkStatus = async () => {
     try {
-      const res = await axios.get("https://api.aryansingh.dev/cad/api/status");
+      const res = await axios.get("http://3.86.68.154:5050/api/status");
       setS3(res.data.s3_status);
       setGlue(res.data.glue);
       setDBStore(res.data.store_DB);
@@ -64,7 +64,7 @@ function Home() {
 
     try {
       const res = await axios.post(
-        "https://api.aryansingh.dev/cad/api/accessKey",
+        "http://3.86.68.154:5050/api/accessKey",
         data
       );
       setApiKey(res.data.apiKey);
